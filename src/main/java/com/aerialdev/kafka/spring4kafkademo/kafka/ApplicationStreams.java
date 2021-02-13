@@ -29,7 +29,7 @@ public class ApplicationStreams {
         };
 //
         stream.selectKey((k,v)->v.getColour())
-        .join(colourTable, joiner)
+        .join(colourTable, joiner, Joined.with(Serdes.String(), new JsonSerde<>(Car.class), new JsonSerde<>(Colour.class)))
                 .selectKey((k, v) -> v.getMake())
                 .mapValues(Car::getPrice)
         .to(PRICE_TOPIC, produced);
